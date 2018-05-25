@@ -1,0 +1,33 @@
+{
+    "manifest_version": 2,
+    "name": "Favorites Manager",
+    "version": "1.0.0",
+    "homepage_url": "https://esar.us",
+    "description": "This extension helps you manage your favorites in MS Edge browser",
+    "author": "Radek Szumski",
+    "icons": {
+        "40": "icons/favorites-40.png"
+    },
+
+    "browser_action": {
+        "default_icon": "icons/favorites-30.png",
+        "default_title": "Favorites Manager"
+    },
+
+    "background": {
+        "scripts": ["background.js"],
+        "persistent": false
+    },
+
+    "permissions": [
+        "bookmarks"
+    ],
+
+    "browser_specific_settings": {
+        "edge": {
+            "browser_action_next_to_addressbar": true
+        }
+    },
+
+    "options_page": "./options/options.html"
+}
