@@ -18,3 +18,6 @@
 
     document.addEventListener('DOMContentLoaded', init);
 })();
+
+//use storage API https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/storage
+// listen for changes with storage.onChanged

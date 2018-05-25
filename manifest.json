@@ -1,17 +1,24 @@
 {
     "manifest_version": 2,
-    "name": "Favorites Manager",
+    "name": "Firefox Bookmark Manager",
     "version": "1.0.0",
     "homepage_url": "https://esar.us",
-    "description": "This extension helps you manage your favorites in MS Edge browser",
+    "description": "This extension helps you manage your bookmarks in Firefox browser",
     "author": "Radek Szumski",
     "icons": {
-        "40": "icons/favorites-40.png"
+        "48": "icons/fav-icon-48.png",
+        "96": "icons/fav-icon-96.png"
     },
 
     "browser_action": {
-        "default_icon": "icons/favorites-30.png",
-        "default_title": "Favorites Manager"
+        "browser_style": true,
+        "default_icon": {
+            "16": "icons/fav-icon-16.png",
+            "32": "icons/fav-icon-32.png",
+            "64": "icons/fav-icon-64.png",
+            "128": "icons/fav-icon-128.png"
+        },
+        "default_title": "Firefox Bookmark Manager"
     },
 
     "background": {
@@ -23,11 +30,9 @@
         "bookmarks"
     ],
 
-    "browser_specific_settings": {
-        "edge": {
-            "browser_action_next_to_addressbar": true
-        }
-    },
-
-    "options_page": "./options/options.html"
+    "options_ui": {
+        "page": "./options/options.html",
+        "open_in_tab": false,
+        "browser_style": true
+    }
 }
