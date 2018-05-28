@@ -1,11 +1,15 @@
+//global variables
+let tree;
 const engine = (() => {
     'use strict';
 
-    const populate = (tree) => {
+    const _populateRightPane = (tree) => {
         // const showAllToggle = showAll.checked ? true : false;
         const readData = (favorites) => {
             const ul = document.createElement('ul');
             for (const favorite of favorites) {
+                console.log('favorite:');
+                console.log(favorite);
                 const li = document.createElement('li');
                 li.setAttribute('draggable', "true");
                 if (favorite.children) {
@@ -37,7 +41,7 @@ const engine = (() => {
                     //     // span.classList.add('green')
                     // };
                     li.appendChild(span);
-                    li.style.backgroundImage = `url('https://www.google.com/s2/favicons?domain=${helpers.getRootUrl(favorite.url)}')`;
+                    li.style.backgroundImage = helpers.getIconUrl(favorite.url);
                     li.classList.add('li_link_item');
                 }
                 helpers.attachDnD(li);
@@ -54,7 +58,7 @@ const engine = (() => {
         });
     };
 
-    const populateLeftPane = (folders) => {
+    const _populateLeftPane = (folders) => {
         const ul = document.createElement('ul');
         ul.classList.add('hideFolder');
         for (const folder of folders) {
@@ -72,8 +76,8 @@ const engine = (() => {
             span.dataset.parentId = folder.parentId;
             span.classList.add('folder_item');
             li.appendChild(span);
-            if (folder.children && folder.children.length > 0) li.appendChild(populateLeftPane(folder.children));
             helpers.attachDnD(li);
+            if (folder.children && folder.children.length > 0) li.appendChild(_populateLeftPane(folder.children));
             ul.appendChild(li);
         }
         return ul;
@@ -82,7 +86,7 @@ const engine = (() => {
     const openFolder = (folder) => {
         helpers.toggleFolder(folder);
         const rightPaneContents = helpers.folderContents(folder, tree);
-        engine.populate(rightPaneContents);
+        _populateRightPane(rightPaneContents);
     };
 
     const openCurrentFolder = (currentFolderId) => {
@@ -94,6 +98,8 @@ const engine = (() => {
     const refreshRoot = (e) => {
         // foldersList.removeEventListener('click', helpers.folderClick);
         if (e) {
+            // console.log('event from refreshRoot:')
+            // console.log(e);
             currentFolderId = e.target.id == 'root' ? null : currentFolderId;
         }
         const refresh = (bookmarkTree) => {
@@ -101,24 +107,25 @@ const engine = (() => {
             console.log(bookmarkTree);
             foldersList.innerHTML = '';
             contentsList.innerHTML = '';
-            const tree = bookmarkTree[0];
+            tree = bookmarkTree[0];
+            console.log('tree:')
             console.log(tree);
 
             //populate the left pane
-            foldersList.appendChild(engine.populateLeftPane(helpers.folderList(tree)));
+            foldersList.appendChild(_populateLeftPane(helpers.folderList(tree)));
             foldersList.querySelector('ul').classList.remove('hideFolder');
             
             //populate the right pane with default (main tree with collapsed folders);
-            engine.populate(tree).then((content) => {
+            _populateRightPane(tree).then((content) => {
                 
             });
         } 
-        browser.bookmarks.getTree(refresh);
+        browser.bookmarks.getTree().then(refresh);
     };
 
     return {
-        populate: populate,
-        populateLeftPane: populateLeftPane,
+        // populateRightPane: populateRightPane,
+        // populateLeftPane: populateLeftPane,
         refreshRoot: refreshRoot,
         openFolder: openFolder,
         openCurrentFolder: openCurrentFolder

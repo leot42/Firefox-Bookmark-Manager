@@ -20,7 +20,12 @@ const helpers = (() => {
         return false;
     };
     
-    const getRootUrl = (url) => url.toString().replace(/^.*\/\/([^\/?#]*).*$/, "$1");
+    
+
+    const getIconUrl = (url) => {
+        const getRootUrl = (url) => url.toString().replace(/^.*\/\/([^\/?#]*).*$/, "$1");
+        return `url('https://www.google.com/s2/favicons?domain=${getRootUrl(url)}')`;
+    }
 
     /**
      * create a folders array 
@@ -30,7 +35,7 @@ const helpers = (() => {
         console.log(favorites);
         let folderTree = [];
         const copyChildren = (node, folder) => {
-            if (node.children) {
+            if (node.children) { //it means the node is a folder
                 let newFolder = {};
                 newFolder.id = node.id;
                 newFolder.title = node.title;
@@ -312,7 +317,7 @@ const helpers = (() => {
 
     return {
         clickInsideElement: clickInsideElement,
-        getRootUrl: getRootUrl,
+        getIconUrl: getIconUrl,
         folderList: folderList,
         folderContents: folderContents,
         folderClick: folderClick,
