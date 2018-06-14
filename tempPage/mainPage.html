@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <!-- <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet"> -->
+
+        <link rel="stylesheet" href="./mainPage.css">
+        <link rel="stylesheet" href="../fontAwesome/css/fontawesome-all.min.css">
+        <script src="helper.js"></script>
+        <script src="engine.js"></script>
+        <script src="./mainPage.js"></script>
+        <title>Bookmark Manager</title>
+    </head>
+
+    <body>
+        <div id="container">
+            <header>
+                <h1>BOOKMARK MANAGER</h1>
+                <div class="settings">
+                <!-- <button id="options" title="Settings"><i class="fab fa-whmcs fa-lg"></i></button> -->
+                <!-- <input type="text"> search field for the future version -->
+                <!-- <button id="tree" title="Options"><i class="fas fa-cog fa-lg"></i></button> -->
+                <i class="fas fa-cog fa-lg"></i>
+                </div>
+                <!-- <hr> -->
+            </header>
+
+            <div id="main">
+                <section id="foldersPane">
+                    <div class="sectionHeader">FOLDERS</div>
+                    <div class="sectionContent">
+                        <ul>
+                            <li>
+                                <span id="root">
+                                    <i class="fas fa-home"></i>
+                                    BOOKMARKS
+                                </span>
+                                <div id="foldersList"></div>
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+                <section id="contentsPane">
+                    <!-- <input type="checkbox" id="showAll"> Show all -->
+                    <div class="sectionHeader">CONTENTS</div>
+                    <div id="contentsList" class="sectionContent"></div>
+                </section>
+            </div>
+            <!-- <footer> -->
+                <!-- STATUS BAR -->
+                <!-- to be replaced with status bar - info on moved, renamed items and so on -->
+            <!-- </footer> -->
+        </div>
+        <div id="modal" class="hide hidden border">
+            <div class="content">
+                <div id="newFolderModal" class="hide hidden">
+                    Add new folder
+                    <br> Title:
+                    <input id='newFolderName' type="text">
+                    <br>
+                    <input id='newFolderCheckbox' type="checkbox"> Insert at the top
+                </div>
+                <div id="newFavoriteModal" class="hide hidden">
+                    Add new favorite
+                    <br> Name:
+                    <input id='newFavoriteName' type="text">
+                    <br> Address:
+                    <input id='newFavoriteAddress' type="text" placeholder="http://">
+                    <br>
+                    <input id='newFavoriteCheckbox' type="checkbox"> Insert at the top
+                </div>
+                <div id="renameModal" class="hide hidden">
+                    Current name:
+                    <br>
+                    <span id="currentName"></span>
+                    <br> Enter new name:
+                    <br>
+                    <input id="newName" type="text">
+                </div>
+            </div>
+            <!-- <div> -->
+
+            <div class="footer">
+                <button id="btnCancel">Cancel</button>
+                <button id="btnDone">Done</button>
+            </div>
+            <!-- </div> -->
+        </div>
+        <div id="consentModal" class="hide hidden border">
+            <div class="content">
+                <div id="deleteModal" class="hide hidden">
+                    Are you sure you want to delete the whole folder <br>
+                    <span id="folderName"></span>
+                    <br>and all its contents?
+                </div>
+                <div id="openAllModal" class="hide hidden">
+                    There are <span id="linksAmount"></span> links about to be open. <br>
+                    ARE YOU SURE?
+                </div>
+            </div>
+            <div class="footer">
+                <button id="btnYes">YES</button>
+                <button id="btnNo">NO</button>
+            </div>
+        </div>
+        <div id="modal-overlay" class="modal-overlay hide hidden"></div>
+        <nav id="context-menu" class="context-menu border">
+            <ul class="context-menu__items">
+                <li class="context-menu__item">
+                    <a href="#" class="context-menu__link" data-action="openLink">
+                        <i class="fas fa-external-link-alt fa-fw"></i> Open in a new tab
+                    </a>
+                </li>
+                <!-- <li class="context-menu__item">
+                    <a href="#" class="context-menu__link" data-action="copyLink">
+                        <i class="fa fa-edit"></i> Copy link address
+                    </a>
+                </li> -->
+                <li class="context-menu__item">
+                    <a href="#" class="context-menu__link" data-action="renameItem">
+                        <!-- <i class="far fa-edit fa-fw"></i> -->
+                        <i class="fas fa-pencil-alt fa-fw"></i>
+                         Rename favorite
+                    </a>
+                </li>
+                <li class="context-menu__item">
+                    <a href="#" class="context-menu__link" data-action="deleteItem">
+                        <i class="far fa-trash-alt fa-fw"></i> Delete favorite
+                    </a>
+                </li>
+                <!-- <li class="context-menu__item">
+                    <a href="#" class="context-menu__link" data-action="copyTo">
+                        <i class="fa fa-times"></i> Copy to...
+                    </a>
+                </li>
+                <li class="context-menu__item">
+                    <a href="#" class="context-menu__link" data-action="moveTo">
+                        <i class="fa fa-times"></i> Move to...
+                    </a>
+                </li> -->
+                <hr style="width: 80%;">
+                <li class="context-menu__item">
+                    <a href="#" class="context-menu__link" data-action="createFolder">
+                        <i class="far fa-folder fa-fw"></i> New folder
+                    </a>
+                </li>
+                <li class="context-menu__item">
+                    <a href="#" class="context-menu__link" data-action="createFavorite">
+                        <i class="far fa-star fa-fw"></i> New favorite
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <nav id="folder-context-menu" class="context-menu border">
+            <ul class="context-menu__items">
+                <li class="context-menu__item">
+                    <a href="#" class="context-menu__folder" data-action="openAll">
+                        <i class="fas fa-external-link-alt fa-fw"></i> Open all links
+                    </a>
+                </li>
+                <li class="context-menu__item">
+                    <a href="#" class="context-menu__folder" data-action="renameItem">
+                        <i class="fas fa-pencil-alt fa-fw"></i> Rename folder
+                    </a>
+                </li>
+                <li class="context-menu__item">
+                    <a href="#" class="context-menu__folder" data-action="deleteItem">
+                        <i class="far fa-trash-alt fa-fw"></i> Delete folder
+                    </a>
+                </li>
+                <!-- <li class="context-menu__item">
+                    <a href="#" class="context-menu__folder" data-action="copyTo">
+                        <i class="fa fa-times"></i> Copy to...
+                    </a>
+                </li>
+                <li class="context-menu__item">
+                    <a href="#" class="context-menu__folder" data-action="moveTo">
+                        <i class="fa fa-times"></i> Move to...
+                    </a>
+                </li> -->
+                <hr style="width:80%">
+                <li class="context-menu__item">
+                    <a href="#" class="context-menu__folder" data-action="createFolder">
+                        <i class="far fa-folder fa-fw"></i> New folder
+                    </a>
+                </li>
+                <li class="context-menu__item">
+                    <a href="#" class="context-menu__folder" data-action="createFavorite">
+                        <i class="far fa-star fa-fw"></i> New favorite
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+    </body>
+
+</html>
