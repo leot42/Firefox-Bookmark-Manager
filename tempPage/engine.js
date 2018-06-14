@@ -2,14 +2,14 @@
 let tree;
 const engine = (() => {
     'use strict';
-
+    console.log('UPDATED');
     const _populateRightPane = (tree) => {
         // const showAllToggle = showAll.checked ? true : false;
         const readData = (favorites) => {
             const ul = document.createElement('ul');
             for (const favorite of favorites) {
-                console.log('favorite:');
-                console.log(favorite);
+                // console.log('favorite:');
+                // console.log(favorite);
                 const li = document.createElement('li');
                 li.setAttribute('draggable', "true");
                 if (favorite.children) {
@@ -103,13 +103,13 @@ const engine = (() => {
             currentFolderId = e.target.id == 'root' ? null : currentFolderId;
         }
         const refresh = (bookmarkTree) => {
-            console.log('bookmarkTree:');
-            console.log(bookmarkTree);
+            // console.log('bookmarkTree:');
+            // console.log(bookmarkTree);
             foldersList.innerHTML = '';
             contentsList.innerHTML = '';
             tree = bookmarkTree[0];
-            console.log('tree:')
-            console.log(tree);
+            // console.log('tree:')
+            // console.log(tree);
 
             //populate the left pane
             foldersList.appendChild(_populateLeftPane(helpers.folderList(tree)));
@@ -166,7 +166,7 @@ const ACTIONS = (() => {
 
         console.log(`object to create:`);
         console.log(newItem);
-        browser.bookmarks.create(newItem, refreshFavorites);
+        browser.bookmarks.create(newItem).then(refreshFavorites);
     };
     const openModal = (type, callbackFn) => {
         const modal = document.querySelector('#modal');
@@ -320,7 +320,7 @@ const ACTIONS = (() => {
                 browser.bookmarks.update(el.dataset.id, {
                     title: newTitle,
                     // url: newURL //if it's a link add option to change it as well
-                }, refreshFavorites);
+                }).then(refreshFavorites);
             } catch (e) {
                 alert('Rename operation failed !!!');
             }
@@ -335,14 +335,14 @@ const ACTIONS = (() => {
             console.log('ACTION: remove a folder with all its contents');
             openConsentModal('delete', el.dataset.title, () => {
                 console.log('deleting...');
-                browser.bookmarks.removeTree(el.dataset.id, () => {
+                browser.bookmarks.removeTree(el.dataset.id).then(() => {
                     currentFolderId = el.dataset.parentId;
                     refreshFavorites;
                 });
             });
         } else if (el.classList.contains('link_item')) {
             console.log('ACTION: remove a favorite or an empty folder');
-            browser.bookmarks.remove(el.dataset.id, refreshFavorites);
+            browser.bookmarks.remove(el.dataset.id).then(refreshFavorites);
         }
     };
 
@@ -367,7 +367,7 @@ const ACTIONS = (() => {
         //the same as copyTo
         console.log('ACTION: MOVE');
         console.log(`favorite ${favorite.dataset.title} moved to ${folder.dataset.title}`);
-        browser.bookmarks.move(favorite.dataset.id, {parentId: folder.dataset.id}, refreshFavorites());
+        browser.bookmarks.move(favorite.dataset.id, {parentId: folder.dataset.id}).then(refreshFavorites);
     };
 
     const createFolder = (el) => {

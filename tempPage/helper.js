@@ -225,6 +225,7 @@ const helpers = (() => {
     };
 
     const rightClickListener = (linkItemClassName, contextLinkClassName, menuSelector) => { // make it more universal -> and attach to the left pane
+        const target = linkItemClassName === 'link_item' ? document.querySelector('#contentsPane') : document.querySelector('#foldersPane');
         const menu = document.querySelector(menuSelector);
         let menuState = 0;
         const contextMenuActive = 'context-menu--active';
@@ -260,8 +261,12 @@ const helpers = (() => {
             menu.style.left = `${left}px`;
         };
 
-        document.addEventListener('contextmenu', (e) => {
+        target.addEventListener('contextmenu', (e) => { 
+            e.preventDefault();
+            console.log(`element rightclicked:`);
+            console.log(e);
             const el = helpers.clickInsideElement(e, linkItemClassName);
+            console.log(el);
             if (el) {
                 selectedElement = el;
                 e.preventDefault();
@@ -273,7 +278,8 @@ const helpers = (() => {
         }, true);
 
         //listen for ESC, click or window resize to dismiss the menu
-        document.addEventListener('keyup', (e) => {
+        window.addEventListener('keyup', (e) => {
+            console.log('esc pressed');
             if (e.keyCode === 27) toggleMenuOff();
         });
 
