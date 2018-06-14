@@ -6,7 +6,7 @@
     const openMainPage = () => {
         browser.tabs.create({
             // "url": "./mainPage/mainPage.html"
-            "url": "./tempPage/mainPageTemp.html"
+            "url": "./tempPage/mainPage.html"
         });
     }
      
