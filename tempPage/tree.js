@@ -395,7 +395,7 @@ var data = {
                 {
                     "id": "{0AA366DD-1EFE-4D72-A313-B97D279022DD}",
                     "parentId": "{D9AB3031-0D0F-4ED3-8B12-58CFAB2FAB41}",
-                    "title": "CSS in JavaScript: The future of component-based styling",
+                    "title": "CSS in JavaScript: The future of component-based styling ",
                     "url": "https://medium.freecodecamp.com/css-in-javascript-the-future-of-component-based-styling-70b161a79a32"
                 },
                 {
